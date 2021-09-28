@@ -1,0 +1,13 @@
+FROM gcr.io/distroless/java:11-nonroot@sha256:51d2d3ceb469c7963a415a4cd37888ff6dec6f048e95b882a2755b91192cd392
+COPY --chown=nonroot:nonroot target/copydir /
+WORKDIR /app
+COPY --chown=nonroot:nonroot target/quarkus-app/lib ./lib
+COPY --chown=nonroot:nonroot target/quarkus-app/app ./app
+COPY --chown=nonroot:nonroot target/quarkus-app/*.jar ./
+COPY --chown=nonroot:nonroot target/quarkus-app/quarkus ./quarkus
+COPY --chown=nonroot:nonroot target/quarkus-app/quarkus-app-dependencies.txt ./
+ENTRYPOINT [ \
+  "java", \
+  "-jar", \
+  "quarkus-run.jar" \
+]
