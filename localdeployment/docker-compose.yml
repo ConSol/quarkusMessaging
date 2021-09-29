@@ -1,0 +1,30 @@
+version: '3.8'
+services:
+  postgres:
+    image: postgres:13.4-alpine@sha256:3ff2a17bb5bc1f9723032da16edb21e55d2af1e2e0f1beda68818a58ead33016
+    volumes:
+      - ./postgres/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d/:ro
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: postgres
+      POSTGRES_MULTIPLE_DATABASES: app_customer,app_order
+    ports:
+      - "15432:5432"
+    networks:
+      - devmode
+  pgadmin4:
+    image: dpage/pgadmin4:5.7@sha256:64475197fc11cb8169de7e59cd4ea15872b3edafe22f87ea7bc23ba7f00bbe96
+    volumes:
+      - ./pgadmin4/pgadmin4/servers.json:/pgadmin4/servers.json:ro
+    depends_on:
+      - postgres
+    ports:
+      - "8091:80"
+    environment:
+      PGADMIN_DEFAULT_EMAIL: pgadmin4@pgadmin.org
+      PGADMIN_DEFAULT_PASSWORD: pgadmin4
+    networks:
+      - devmode
+networks:
+  devmode:
