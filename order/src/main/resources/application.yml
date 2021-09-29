@@ -2,6 +2,10 @@ amqp-host: ${AMQP_HOST:localhost}
 amqp-port: ${AMQP_PORT:5672}
 amqp-username: ${AMQP_USERNAME:artemis}
 amqp-password: ${AMQP_PASSWORD:artemis}
+kafka:
+  bootstrap:
+    servers:
+      - localhost:9092
 quarkus:
   http:
     port: 8081
@@ -22,3 +26,9 @@ mp:
         connector: smallrye-amqp
         durable: true
         use-anonymous-sender: false
+    outgoing:
+      kafka-new-order-channel:
+        connector: smallrye-kafka
+        topic: kafka-new-order-channel
+        value:
+          serializer: io.quarkus.kafka.client.serialization.ObjectMapperSerializer
