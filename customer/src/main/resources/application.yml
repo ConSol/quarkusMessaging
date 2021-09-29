@@ -1,3 +1,7 @@
+amqp-host: ${AMQP_HOST:localhost}
+amqp-port: ${AMQP_PORT:5672}
+amqp-username: ${AMQP_USERNAME:artemis}
+amqp-password: ${AMQP_PASSWORD:artemis}
 quarkus:
   http:
     test-port: 0
@@ -10,3 +14,10 @@ quarkus:
       url: jdbc:postgresql://${DB_HOST:localhost:15432}/${DB_DATABASE:app_customer}
       max-size: 8
       min-size: 2
+mp:
+  messaging:
+    outgoing:
+      jms-new-customer-channel:
+        connector: smallrye-amqp
+        durable: true
+        use-anonymous-sender: false
