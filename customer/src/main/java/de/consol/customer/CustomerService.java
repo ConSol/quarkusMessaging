@@ -1,5 +1,6 @@
 package de.consol.customer;
 
+import de.consol.customer.boundary.messaging.jms.outgoing.NewCustomerEmitter;
 import de.consol.customer.boundary.repository.CustomerRepository;
 import de.consol.customer.boundary.request.CreateCustomerRequest;
 import de.consol.customer.boundary.response.CustomerResponse;
@@ -20,11 +21,14 @@ public class CustomerService {
   private final CustomerRepository repository;
   private final CustomerMapper mapper;
   private final OrderService orderService;
+  private final NewCustomerEmitter newCustomerEmitter;
 
   public CustomerResponse createNewCustomer(CreateCustomerRequest request) {
     final CustomerEntity toSave = mapper.requestToEntity(request, Instant.now());
     final CustomerEntity saved = repository.save(toSave);
-    return mapper.entityToResponse(saved);
+    final CustomerResponse response = mapper.entityToResponse(saved);
+    newCustomerEmitter.emit(response);
+    return response;
   }
 
   public List<CustomerResponse> getAllCustomers() {
