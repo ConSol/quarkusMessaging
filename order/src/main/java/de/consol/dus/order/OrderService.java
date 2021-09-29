@@ -1,5 +1,6 @@
 package de.consol.dus.order;
 
+import de.consol.dus.order.boundary.messaging.kafka.outgoing.NewOrderEmitter;
 import de.consol.dus.order.boundary.repository.CustomerRepository;
 import de.consol.dus.order.boundary.repository.OrderRepository;
 import de.consol.dus.order.boundary.request.CreateOrderRequest;
@@ -24,6 +25,7 @@ public class OrderService {
   private final CustomerRepository customerRepository;
   private final OrderRepository orderRepository;
   private final OrderMapper orderMapper;
+  private final NewOrderEmitter newOrderEmitter;
 
   public OrderResponse createOrder(CreateOrderRequest request) {
     final CustomerEntity customer = customerRepository.findByEmail(request.getCustomerEmail())
@@ -31,7 +33,9 @@ public class OrderService {
     final OrderEntity toSave =
         orderMapper.requestToEntity(request, Instant.now(), random.nextInt(10_00))
             .setCustomer(customer);
-    return orderMapper.entityToResponse(orderRepository.save(toSave));
+    final OrderResponse response = orderMapper.entityToResponse(orderRepository.save(toSave));
+    newOrderEmitter.emit(response);
+    return response;
   }
 
   @Transactional
