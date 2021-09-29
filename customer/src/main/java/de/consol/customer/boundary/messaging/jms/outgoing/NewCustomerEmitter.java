@@ -1,4 +1,4 @@
-package de.consol.customer.boundary.jms.outgoing;
+package de.consol.customer.boundary.messaging.jms.outgoing;
 
 import de.consol.customer.boundary.response.CustomerResponse;
 import javax.enterprise.context.ApplicationScoped;
