@@ -35,5 +35,8 @@ mp:
       kafka-new-order-channel:
         connector: smallrye-kafka
         topic: kafka-new-order-channel
+        interceptor:
+          classes:
+            - io.opentracing.contrib.kafka.TracingConsumerInterceptor
         value:
           deserializer: de.consol.customer.boundary.messaging.kafka.incoming.CreateOrderDeserializer
