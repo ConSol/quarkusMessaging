@@ -66,5 +66,12 @@ services:
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
     networks:
       - messaging
+  tracing-service:
+    image: jaegertracing/all-in-one@sha256:ca6b733306168eae6257e6c5957c5f44ba406a3b0ae0d25074f1cf3a01f5ee8b
+    ports:
+      - '14268:14268'
+      - '16686:16686'
+    networks:
+      - messaging
 networks:
   messaging:
