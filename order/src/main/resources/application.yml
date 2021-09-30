@@ -36,5 +36,8 @@ mp:
       kafka-new-order-channel:
         connector: smallrye-kafka
         topic: kafka-new-order-channel
+        interceptor:
+          classes:
+            - io.opentracing.contrib.kafka.TracingProducerInterceptor
         value:
           serializer: io.quarkus.kafka.client.serialization.ObjectMapperSerializer
