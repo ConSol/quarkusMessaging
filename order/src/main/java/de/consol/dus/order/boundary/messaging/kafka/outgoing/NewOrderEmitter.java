@@ -17,6 +17,7 @@ public class NewOrderEmitter {
     this.emitter = emitter;
   }
 
+  @KafkaBridge
   public void emit(OrderResponse order) {
     log.info("Sending newly created order: {}", order);
     emitter.send(order);
