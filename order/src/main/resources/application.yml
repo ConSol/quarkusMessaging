@@ -19,6 +19,12 @@ quarkus:
       url: jdbc:postgresql://${DB_HOST:localhost:15432}/${DB_DATABASE:app_order}
       max-size: 8
       min-size: 2
+  jaeger:
+    enabled: true
+    endpoint: ${TRACING_ENDPOINT:http://localhost:14268/api/traces}
+    sampler-type: const
+    sampler-param: 1
+    service-name: order-service
 mp:
   messaging:
     incoming:
